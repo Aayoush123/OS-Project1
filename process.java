@@ -3,7 +3,9 @@ public class process
     int pid;
     int arrival_time;
     int burst_time;
-    int priority; 
+    int priority;
+    int waiting_time;
+    int turnaround_time; 
 
     public process(int pid, int arrival_time, int burst_time, int priority) 
     {
@@ -11,5 +13,11 @@ public class process
         this.arrival_time = arrival_time;
         this.burst_time = burst_time;
         this.priority = priority;
+        this.waiting_time = 0;
+        this.turnaround_time = 0;
+    }
+    public void CalcualteTimes(int CompletionTime){
+        this.turnaround_time = CompletionTime - this.arrival_time;
+        this.waiting_time = this.turnaround_time - this.burst_time;
     }
 }

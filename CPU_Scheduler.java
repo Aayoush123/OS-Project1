@@ -5,14 +5,14 @@ public class CPU_Scheduler
 {
     public static void main(String[] args) 
     {
-        List<Process> processes = readProcessesFromFile("processes.txt");
+        List<Process_Create> processes = readProcessesFromFile("processes.txt");
 
     }
         
         
-    public static List<Process> readProcessesFromFile(String filename) 
+    public static List<Process_Create> readProcessesFromFile(String filename) 
     {
-        List<Process> processes = new ArrayList<>();
+        List<Process_Create> processes = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line = reader.readLine(); // Skip header line

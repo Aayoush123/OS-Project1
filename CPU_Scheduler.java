@@ -15,7 +15,7 @@ public class CPU_Scheduler
         List<Process_Create> processes = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine(); // Skip header line
+            String line = reader.readLine(); 
             
             while ((line = reader.readLine()) != null) 
             {
@@ -36,7 +36,7 @@ public class CPU_Scheduler
         {
             System.err.println("Error reading file: " + e.getMessage());
         } catch (NumberFormatException e) {
-            System.err.println("Error parsing process data: " + e.getMessage());
+            System.err.println("Error parsing process data : " + e.getMessage());
         }
         return processes;
     }

@@ -1,4 +1,4 @@
-public class process 
+public class Process_Create 
 {
     int pid;
     int arrival_time;
@@ -7,7 +7,7 @@ public class process
     int waiting_time;
     int turnaround_time; 
 
-    public process(int pid, int arrival_time, int burst_time, int priority) 
+    public Process_Create(int pid, int arrival_time, int burst_time, int priority) 
     {
         this.pid = pid;
         this.arrival_time = arrival_time;

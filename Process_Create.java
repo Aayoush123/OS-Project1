@@ -16,7 +16,8 @@ public class Process_Create
         this.waiting_time = 0;
         this.turnaround_time = 0;
     }
-    public void CalcualteTimes(int CompletionTime){
+    public void Calcualte_Times(int CompletionTime)
+    {
         this.turnaround_time = CompletionTime - this.arrival_time;
         this.waiting_time = this.turnaround_time - this.burst_time;
     }

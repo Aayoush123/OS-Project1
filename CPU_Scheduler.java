@@ -6,7 +6,24 @@ public class CPU_Scheduler
     public static void main(String[] args) 
     {
         List<Process_Create> processes = readProcessesFromFile("processes.txt");
+        
+        Scheduling_Algorithms scheduler = new Scheduling_Algorithms();
 
+        // Make copies of the processes data before sorting based on algorithm
+        List<Process_Create> FCFSProcesses = new ArrayList<>();
+        for (Process_Create p : processes) 
+        {
+            FCFSProcesses.add(new Process_Create(p.pid, p.arrival_time, p.burst_time, p.priority));
+        }
+
+        List<Process_Create> priorityProcesses = new ArrayList<>();
+        for (Process_Create p : processes)
+        {
+            priorityProcesses.add(new Process_Create(p.pid, p.arrival_time, p.burst_time, p.priority));
+        }
+
+        scheduler.FCFS(FCFSProcesses);
+        scheduler.Priority_Scheduling(priorityProcesses);
     }
         
         
@@ -40,7 +57,4 @@ public class CPU_Scheduler
         }
         return processes;
     }
-    
-
-    
 }

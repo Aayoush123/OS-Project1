@@ -18,6 +18,7 @@ public class Scheduling_Algorithms
     
     public void FCFS(List<Process_Create> processes)
     {
+        System.out.println("\n=== First Come First Served (FCFS) ===");
         // Sort the processes based on the arrival time
         processes.sort(Comparator.comparingInt(p -> p.arrival_time));
 
@@ -45,6 +46,7 @@ public class Scheduling_Algorithms
     // No interrupts on running processes
     public void Priority_Scheduling(List<Process_Create> processes)
     {
+        System.out.println("\n=== Priority Scheduling ===");
         // Sort processes based on arrival time first
         // because the scheduler can't schedule a processes that hasn't yet arrived
         processes.sort(Comparator.comparingInt(p -> p.arrival_time));
@@ -74,7 +76,7 @@ public class Scheduling_Algorithms
             }
             
             // Picking process with highest priority in Ready List
-            Process_Create next = readyList.stream().min(Comparator.comparingInt(p -> p.priority)).get();
+            Process_Create next = readyList.stream().max(Comparator.comparingInt(p -> p.priority)).get(); 
             readyList.remove(next);
 
 
@@ -93,6 +95,53 @@ public class Scheduling_Algorithms
         }
         printGanttChart(ganttChart);
         Print_Results("Priority Scheduling", completed);
+    }
+    public void SJF(List<Process_Create> processes) 
+    {
+        System.out.println("\n=== Shortest Job First ===");
+        
+        processes.sort(Comparator.comparingInt(p -> p.arrival_time));
+
+        int currentTime = 0;
+        List<Process_Create> completed = new ArrayList<>();
+        List<Process_Create> readyList = new ArrayList<>();
+        List<GanttEntry> ganttChart = new ArrayList<>();
+
+        while (completed.size() < processes.size()) {
+            // Add processes that have arrived to ready list
+            for (Process_Create p : processes) 
+            {
+                if (p.arrival_time <= currentTime && !completed.contains(p) && !readyList.contains(p)) {
+                    readyList.add(p);
+                }
+            }
+
+            if (readyList.isEmpty()) 
+            {
+                currentTime++;
+                continue;
+            }
+
+            // Find process with shortest burst time
+            Process_Create next = readyList.stream().min(Comparator.comparingInt(p -> p.burst_time)).get();
+            readyList.remove(next);
+
+            if (currentTime < next.arrival_time) 
+            {
+                currentTime = next.arrival_time;
+            }
+
+            int startTime = currentTime;
+            currentTime += next.burst_time;
+            int endTime = currentTime;
+            
+            ganttChart.add(new GanttEntry(next.pid, startTime, endTime));
+            next.Calculate_Times(currentTime);
+            completed.add(next);
+        }
+
+        printGanttChart(ganttChart);
+        Print_Results("Shortest Job First (SJF)", completed);
     }
 
     private void printGanttChart(List<GanttEntry> ganttChart) {

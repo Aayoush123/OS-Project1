@@ -21,9 +21,15 @@ public class CPU_Scheduler
         {
             priorityProcesses.add(new Process_Create(p.pid, p.arrival_time, p.burst_time, p.priority));
         }
+        List<Process_Create> SJFProcesses = new ArrayList<>();
+        for (Process_Create p : processes)
+        {
+            SJFProcesses.add(new Process_Create(p.pid, p.arrival_time, p.burst_time, p.priority));
+        }
 
         scheduler.FCFS(FCFSProcesses);
         scheduler.Priority_Scheduling(priorityProcesses);
+        scheduler.SJF(processes);
     }
         
         

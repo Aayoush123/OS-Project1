@@ -1,12 +1,28 @@
 import java.util.*;
 
-public class Scheduling_Algorithms {
+public class Scheduling_Algorithms 
+{
+    class GanttEntry 
+    {
+        int pid;
+        int startTime;
+        int endTime;
+        
+        GanttEntry(int pid, int startTime, int endTime) 
+        {
+            this.pid = pid;
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+    }
+    
     public void FCFS(List<Process_Create> processes)
     {
         // Sort the processes based on the arrival time
         processes.sort(Comparator.comparingInt(p -> p.arrival_time));
 
         int currentTime = 0;
+        List<GanttEntry> ganttChart = new ArrayList<>();
         for (Process_Create p : processes)
         {
             // If the current time is less than the next processes arrival time,
@@ -15,11 +31,13 @@ public class Scheduling_Algorithms {
             {
                 currentTime = p.arrival_time;
             }
-
+            int startTime = currentTime;
             currentTime += p.burst_time;
-            p.Calcualte_Times(currentTime);
+            int endTime = currentTime;
+            ganttChart.add(new GanttEntry(p.pid, startTime, endTime));
+            p.Calculate_Times(currentTime);
         }
-
+        printGanttChart(ganttChart);
         Print_Results("First Come First Served Algorithm", processes);
     }
 
@@ -34,6 +52,7 @@ public class Scheduling_Algorithms {
         int currentTime = 0;
         List<Process_Create> completed = new ArrayList<>();
         List<Process_Create> readyList = new ArrayList<>();
+        List<GanttEntry> ganttChart = new ArrayList<>();
 
         while (completed.size() < processes.size())
         {
@@ -64,12 +83,46 @@ public class Scheduling_Algorithms {
                 currentTime = next.arrival_time;
             }
 
+            int startTime = currentTime;
             currentTime += next.burst_time;
-            next.Calcualte_Times(currentTime);
+            int endTime = currentTime;
+            
+            ganttChart.add(new GanttEntry(next.pid, startTime, endTime));
+            next.Calculate_Times(currentTime);
             completed.add(next);
         }
-
+        printGanttChart(ganttChart);
         Print_Results("Priority Scheduling", completed);
+    }
+
+    private void printGanttChart(List<GanttEntry> ganttChart) {
+        System.out.println("\nGantt Chart:");
+        System.out.println("Execution Order:");
+        
+        // Print process bars
+        for (GanttEntry entry : ganttChart) {
+            System.out.print("+");
+            for (int i = 0; i < 6; i++) System.out.print("-");
+        }
+        System.out.println("+");
+        
+        for (GanttEntry entry : ganttChart) {
+            System.out.printf("| P%-3d", entry.pid);
+        }
+        System.out.println("|");
+        
+        for (GanttEntry entry : ganttChart) {
+            System.out.print("+");
+            for (int i = 0; i < 6; i++) System.out.print("-");
+        }
+        System.out.println("+");
+        
+        // Print timeline
+        System.out.print(ganttChart.get(0).startTime);
+        for (GanttEntry entry : ganttChart) {
+            System.out.printf("%6d", entry.endTime);
+        }
+        System.out.println("\n");
     }
 
     private void Print_Results(String algorithm, List<Process_Create> processes)

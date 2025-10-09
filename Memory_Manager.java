@@ -2,11 +2,10 @@ import java.util.*;
 
 public class Memory_Manager 
 {
-    
     public static class MemoryAllocation 
     {
-        
-        private static class MemoryBlock 
+        // represents a block of memory with start/end addresses
+        public class MemoryBlock 
         {
             int id;
             int size;
@@ -15,7 +14,7 @@ public class Memory_Manager
             boolean allocated;
             String processId;
             
-            MemoryBlock(int id, int size, int startAddress) 
+            public MemoryBlock(int id, int size, int startAddress) 
             {
                 this.id = id;
                 this.size = size;
@@ -26,6 +25,7 @@ public class Memory_Manager
             }
         }
         
+        // tracks memory requirements for each process
         static class ProcessMemory 
         {
             String processId;
@@ -38,6 +38,7 @@ public class Memory_Manager
             }
         }
         
+        // First Fit: Allocate too first available block that's large enough
         public static void firstFit(List<MemoryBlock> memory, List<ProcessMemory> processes)
         {
             System.out.println("\n=== First Fit Memory Allocation ===");
@@ -55,7 +56,7 @@ public class Memory_Manager
                         System.out.printf("Allocated Process %s (%d KB) to Block %d (%d KB)\n",
                             process.processId, process.memoryRequired, block.id, block.size);
                         allocated = true;
-                        break;
+                        break;  // Stop searching after first fit
                     }
                 }
                 if (!allocated) 
@@ -68,6 +69,7 @@ public class Memory_Manager
             printMemoryLayout(memory, "Final Memory Layout after First Fit");
         }
         
+        // Best Fit: Allocate to smallest sufficient block
         public static void bestFit(List<MemoryBlock> memory, List<ProcessMemory> processes) 
         {
             System.out.println("\n=== Best Fit Memory Allocation ===");
@@ -104,6 +106,7 @@ public class Memory_Manager
             printMemoryLayout(memory, "Final Memory Layout after Best Fit");
         }
         
+        // Worst Fit: Allocate to largest available block
         public static void worstFit(List<MemoryBlock> memory, List<ProcessMemory> processes) 
         {
             System.out.println("\n=== Worst Fit Memory Allocation ===");
@@ -140,7 +143,8 @@ public class Memory_Manager
             printMemoryLayout(memory, "Final Memory Layout after Worst Fit");
         }
         
-        private static void printMemoryLayout(List<MemoryBlock> memory, String title) 
+
+        public static void printMemoryLayout(List<MemoryBlock> memory, String title) 
         {
             System.out.println("\n" + title + ":");
             System.out.println("Block ID | Start Address | End Address | Size (KB) | Status     | Process");
@@ -157,9 +161,11 @@ public class Memory_Manager
         }
     }
     
+    // Page replacement algorithms for virtual memory management
     public static class PageReplacement 
     {
         
+        // FIFO: Replace oldest page in memory
         public static void fifo(int[] pageReferences, int frameCount) 
         {
             System.out.println("\n=== FIFO Page Replacement ===");
@@ -202,6 +208,7 @@ public class Memory_Manager
             System.out.printf("Page Fault Rate: %.2f%%\n", (double) pageFaults / pageReferences.length * 100);
         }
         
+        // LRU: Replace least recently used page
         public static void lru(int[] pageReferences, int frameCount) 
         {
             System.out.println("\n=== LRU Page Replacement ===");
@@ -243,6 +250,7 @@ public class Memory_Manager
             System.out.printf("Page Fault Rate: %.2f%%\n", (double) pageFaults / pageReferences.length * 100);
         }
         
+        // Optimal: Replace page that won't be used for longest time (theoretical)
         public static void optimal(int[] pageReferences, int frameCount) 
         {
             System.out.println("\n=== Optimal Page Replacement ===");
@@ -308,17 +316,18 @@ public class Memory_Manager
             System.out.printf("Page Fault Rate: %.2f%%\n", (double) pageFaults / pageReferences.length * 100);
         }
         
-        private static String getFrameState(Queue<Integer> frames) 
+        // Helper methods to display frame states
+        public static String getFrameState(Queue<Integer> frames) 
         {
             return frames.toString();
         }
         
-        private static String getLRUFrameState(LinkedHashMap<Integer, Integer> lruCache) 
+        public static String getLRUFrameState(LinkedHashMap<Integer, Integer> lruCache) 
         {
             return lruCache.keySet().toString();
         }
         
-        private static String getOptimalFrameState(List<Integer> frames) 
+        public static String getOptimalFrameState(List<Integer> frames) 
         {
             return frames.toString();
         }

@@ -30,7 +30,66 @@ public class CPU_Scheduler
         scheduler.FCFS(FCFSProcesses);
         scheduler.Priority_Scheduling(priorityProcesses);
         scheduler.SJF(SJFProcesses);
+        // ===== MEMORY MANAGEMENT SECTION =====
+        System.out.println("\n\n" + "=".repeat(60));
+        System.out.println("MEMORY MANAGEMENT SIMULATION");
+        System.out.println("=".repeat(60));
         
+        // Create memory blocks for allocation algorithms
+        List<Memory_Manager.MemoryAllocation.MemoryBlock> memoryBlocks1 = createMemoryBlocks();
+        List<Memory_Manager.MemoryAllocation.MemoryBlock> memoryBlocks2 = createMemoryBlocks();
+        List<Memory_Manager.MemoryAllocation.MemoryBlock> memoryBlocks3 = createMemoryBlocks();
+        
+        // Create process memory requests
+        List<Memory_Manager.MemoryAllocation.ProcessMemory> memoryProcesses = new ArrayList<>();
+        memoryProcesses.add(new Memory_Manager.MemoryAllocation.ProcessMemory("P1", 212));
+        memoryProcesses.add(new Memory_Manager.MemoryAllocation.ProcessMemory("P2", 417));
+        memoryProcesses.add(new Memory_Manager.MemoryAllocation.ProcessMemory("P3", 112));
+        memoryProcesses.add(new Memory_Manager.MemoryAllocation.ProcessMemory("P4", 426));
+        
+        // Run memory allocation algorithms
+        Memory_Manager.MemoryAllocation.firstFit(memoryBlocks1, memoryProcesses);
+        Memory_Manager.MemoryAllocation.bestFit(memoryBlocks2, memoryProcesses);
+        Memory_Manager.MemoryAllocation.worstFit(memoryBlocks3, memoryProcesses);
+        
+        // ===== PAGE REPLACEMENT SECTION =====
+        System.out.println("\n\n" + "=".repeat(60));
+        System.out.println("PAGE REPLACEMENT SIMULATION");
+        System.out.println("=".repeat(60));
+        
+        // Test Page Replacement algorithms
+        int[] pageReferences = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2};
+        Memory_Manager.PageReplacement.fifo(pageReferences, 3);
+        Memory_Manager.PageReplacement.lru(pageReferences, 3);
+        Memory_Manager.PageReplacement.optimal(pageReferences, 3);
+    }
+
+    private static List<Memory_Manager.MemoryAllocation.MemoryBlock> createMemoryBlocks() 
+    {
+        List<Memory_Manager.MemoryAllocation.MemoryBlock> blocks = new ArrayList<>();
+        
+        // Create instance of the enclosing class
+        Memory_Manager.MemoryAllocation memoryAllocator = new Memory_Manager.MemoryAllocation();
+        
+        // Use the instance to create MemoryBlock objects
+        Memory_Manager.MemoryAllocation.MemoryBlock block1 = 
+            memoryAllocator.new MemoryBlock(1, 100, 0);
+        Memory_Manager.MemoryAllocation.MemoryBlock block2 = 
+            memoryAllocator.new MemoryBlock(2, 500, 100);
+        Memory_Manager.MemoryAllocation.MemoryBlock block3 = 
+            memoryAllocator.new MemoryBlock(3, 200, 600);
+        Memory_Manager.MemoryAllocation.MemoryBlock block4 = 
+            memoryAllocator.new MemoryBlock(4, 300, 800);
+        Memory_Manager.MemoryAllocation.MemoryBlock block5 = 
+            memoryAllocator.new MemoryBlock(5, 600, 1100);
+        
+        blocks.add(block1);
+        blocks.add(block2);
+        blocks.add(block3);
+        blocks.add(block4);
+        blocks.add(block5);
+        
+        return blocks;
     }
         
         

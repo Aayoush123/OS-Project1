@@ -74,7 +74,7 @@ public class Scheduling_Algorithms
             }
             
             // Picking process with highest priority in Ready List
-            Process_Create next = readyList.stream().max(Comparator.comparingInt(p -> p.priority)).get();
+            Process_Create next = readyList.stream().min(Comparator.comparingInt(p -> p.priority)).get();
             readyList.remove(next);
 
 
@@ -130,11 +130,21 @@ public class Scheduling_Algorithms
         System.out.println("\n" + algorithm);
         System.out.printf("%-5s %-15s %-15s %-15s %-10s %-10s%n", 
             "PID", "Arrival_Time", "Burst_Time", "Priority", "WT", "TAT");
-
+        int totalWT = 0;
+        int totalTAT = 0;
         for (Process_Create p : processes) 
         {
             System.out.printf("%-5d %-15d %-15d %-15d %-10d %-10d%n",
                 p.pid, p.arrival_time, p.burst_time, p.priority, p.waiting_time, p.turnaround_time);
+            totalWT += p.waiting_time;
+            totalTAT += p.turnaround_time;
         }
+
+        double avgWT = (double) totalWT / processes.size();
+        double avgTAT = (double) totalTAT / processes.size();
+        
+        System.out.printf("\nAverage Waiting Time: %.2f\n", avgWT);
+        System.out.printf("Average Turnaround Time: %.2f\n", avgTAT);
+        
     }
 }

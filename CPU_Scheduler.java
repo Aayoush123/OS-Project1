@@ -29,7 +29,8 @@ public class CPU_Scheduler
 
         scheduler.FCFS(FCFSProcesses);
         scheduler.Priority_Scheduling(priorityProcesses);
-        scheduler.SJF(processes);
+        scheduler.SJF(SJFProcesses);
+        
     }
         
         

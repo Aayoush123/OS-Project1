@@ -39,16 +39,15 @@ public class Scheduling_Algorithms
             p.Calculate_Times(currentTime);
         }
         printGanttChart(ganttChart);
-        Print_Results("First Come First Served Algorithm", processes);
+        Print_Results("First Come First Served Algorithm", processes, ganttChart);
     }
 
     // This is non-preemptive priority scheduling
-    // No interrupts on running processes
+
     public void Priority_Scheduling(List<Process_Create> processes)
     {
         System.out.println("\n=== Priority Scheduling ===");
         // Sort processes based on arrival time first
-        // because the scheduler can't schedule a processes that hasn't yet arrived
         processes.sort(Comparator.comparingInt(p -> p.arrival_time));
 
         int currentTime = 0;
@@ -58,7 +57,7 @@ public class Scheduling_Algorithms
 
         while (completed.size() < processes.size())
         {
-            // Adding arriving processes that come while the CPU is in use
+            // adding arriving processes that come while the CPU is in use
             for (Process_Create p : processes)
             {
                 if (p.arrival_time <= currentTime && !completed.contains(p) && !readyList.contains(p))
@@ -67,7 +66,7 @@ public class Scheduling_Algorithms
                 }
             }
 
-            // If the CPU is not in use, but there aren't any processes that have arrived
+            // if the CPU is not in use, but there aren't any processes that have arrived
             // then we will increment time by 1
             if (readyList.isEmpty())
             {
@@ -75,11 +74,11 @@ public class Scheduling_Algorithms
                 continue;
             }
             
-            // Picking process with highest priority in Ready List
+            // picking process with highest priority in Ready List
             Process_Create next = readyList.stream().max(Comparator.comparingInt(p -> p.priority)).get(); 
             readyList.remove(next);
 
-
+            // ensure CPU time doesn't go backwards if process arrives later
             if (currentTime < next.arrival_time)
             {
                 currentTime = next.arrival_time;
@@ -94,8 +93,9 @@ public class Scheduling_Algorithms
             completed.add(next);
         }
         printGanttChart(ganttChart);
-        Print_Results("Priority Scheduling", completed);
+        Print_Results("Priority Scheduling", completed, ganttChart);
     }
+    
     public void SJF(List<Process_Create> processes) 
     {
         System.out.println("\n=== Shortest Job First ===");
@@ -108,7 +108,7 @@ public class Scheduling_Algorithms
         List<GanttEntry> ganttChart = new ArrayList<>();
 
         while (completed.size() < processes.size()) {
-            // Add processes that have arrived to ready list
+            // add processes that have arrived to ready list
             for (Process_Create p : processes) 
             {
                 if (p.arrival_time <= currentTime && !completed.contains(p) && !readyList.contains(p)) {
@@ -116,13 +116,14 @@ public class Scheduling_Algorithms
                 }
             }
 
+            // handle idle CPU time when no processes are ready
             if (readyList.isEmpty()) 
             {
                 currentTime++;
                 continue;
             }
 
-            // Find process with shortest burst time
+            // find process with shortest burst time
             Process_Create next = readyList.stream().min(Comparator.comparingInt(p -> p.burst_time)).get();
             readyList.remove(next);
 
@@ -141,20 +142,21 @@ public class Scheduling_Algorithms
         }
 
         printGanttChart(ganttChart);
-        Print_Results("Shortest Job First (SJF)", completed);
+        Print_Results("Shortest Job First (SJF)", completed, ganttChart);
     }
 
     private void printGanttChart(List<GanttEntry> ganttChart) {
         System.out.println("\nGantt Chart:");
         System.out.println("Execution Order:");
         
-        // Print process bars
+        // print process bars
         for (GanttEntry entry : ganttChart) {
             System.out.print("+");
             for (int i = 0; i < 6; i++) System.out.print("-");
         }
         System.out.println("+");
         
+        // display process IDs in their execution order
         for (GanttEntry entry : ganttChart) {
             System.out.printf("| P%-3d", entry.pid);
         }
@@ -166,7 +168,7 @@ public class Scheduling_Algorithms
         }
         System.out.println("+");
         
-        // Print timeline
+        // print timeline with completion times
         System.out.print(ganttChart.get(0).startTime);
         for (GanttEntry entry : ganttChart) {
             System.out.printf("%6d", entry.endTime);
@@ -174,26 +176,37 @@ public class Scheduling_Algorithms
         System.out.println("\n");
     }
 
-    private void Print_Results(String algorithm, List<Process_Create> processes)
+    private void Print_Results(String algorithm, List<Process_Create> processes, List<GanttEntry> ganttChart)
     {
         System.out.println("\n" + algorithm);
         System.out.printf("%-5s %-15s %-15s %-15s %-10s %-10s%n", 
             "PID", "Arrival_Time", "Burst_Time", "Priority", "WT", "TAT");
         int totalWT = 0;
         int totalTAT = 0;
+        int totalBurstTime = 0;
         for (Process_Create p : processes) 
         {
             System.out.printf("%-5d %-15d %-15d %-15d %-10d %-10d%n",
                 p.pid, p.arrival_time, p.burst_time, p.priority, p.waiting_time, p.turnaround_time);
             totalWT += p.waiting_time;
             totalTAT += p.turnaround_time;
+            totalBurstTime += p.burst_time;
         }
 
         double avgWT = (double) totalWT / processes.size();
         double avgTAT = (double) totalTAT / processes.size();
         
+        // Calculate total execution time from Gantt chart
+        int totalTime = ganttChart.get(ganttChart.size() - 1).endTime;
+        int firstArrival = ganttChart.get(0).startTime;
+        int actualTotalTime = totalTime - firstArrival;
+        
+        // Calculate CPU utilization percentage
+        double cpuUtilization = ((double) totalBurstTime / actualTotalTime) * 100;
+        
         System.out.printf("\nAverage Waiting Time: %.2f\n", avgWT);
         System.out.printf("Average Turnaround Time: %.2f\n", avgTAT);
-        
+        System.out.printf("CPU Utilization: %.2f%%\n", cpuUtilization);
+        System.out.printf("Total Execution Time: %d time units\n", totalTime);
     }
 }

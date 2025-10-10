@@ -16,6 +16,7 @@ public class Process_Create
         this.waiting_time = 0;
         this.turnaround_time = 0;
     }
+    // calculate turnaround and waiting times based on completion time
     public void Calculate_Times(int CompletionTime)
     {
         this.turnaround_time = CompletionTime - this.arrival_time;

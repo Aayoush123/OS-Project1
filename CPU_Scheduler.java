@@ -27,9 +27,11 @@ public class CPU_Scheduler
             SJFProcesses.add(new Process_Create(p.pid, p.arrival_time, p.burst_time, p.priority));
         }
 
+        // Execute all CPU scheduling algorithms with separate process copies
         scheduler.FCFS(FCFSProcesses);
         scheduler.Priority_Scheduling(priorityProcesses);
         scheduler.SJF(SJFProcesses);
+        
         // ===== MEMORY MANAGEMENT SECTION =====
         System.out.println("\n\n" + "=".repeat(60));
         System.out.println("MEMORY MANAGEMENT SIMULATION");
@@ -64,6 +66,7 @@ public class CPU_Scheduler
         Memory_Manager.PageReplacement.optimal(pageReferences, 3);
     }
 
+    // Creates memory blocks with different sizes for allocation algorithms
     private static List<Memory_Manager.MemoryAllocation.MemoryBlock> createMemoryBlocks() 
     {
         List<Memory_Manager.MemoryAllocation.MemoryBlock> blocks = new ArrayList<>();
@@ -92,7 +95,7 @@ public class CPU_Scheduler
         return blocks;
     }
         
-        
+    // Read process data from input file and create Process_Create objects
     public static List<Process_Create> readProcessesFromFile(String filename) 
     {
         List<Process_Create> processes = new ArrayList<>();

@@ -250,7 +250,7 @@ public class Memory_Manager
             System.out.printf("Page Fault Rate: %.2f%%\n", (double) pageFaults / pageReferences.length * 100);
         }
         
-        // Optimal: Replace page that won't be used for longest time (theoretical)
+        // Optimal: Replace page that won't be used for longest time 
         public static void optimal(int[] pageReferences, int frameCount) 
         {
             System.out.println("\n=== Optimal Page Replacement ===");

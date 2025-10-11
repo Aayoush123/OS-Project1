@@ -1,0 +1,222 @@
+=== First Come First Served (FCFS) ===
+
+Gantt Chart:
+Execution Order:
++------+------+------+------+------+
+| P1  | P4  | P2  | P5  | P3  |
++------+------+------+------+------+
+0     5    14    17    18    20
+
+
+First Come First Served Algorithm
+PID   Arrival_Time    Burst_Time      Priority        WT         TAT       
+1     0               5               2               0          5         
+4     1               9               5               4          13        
+2     2               3               1               12         15        
+5     2               1               3               15         16        
+3     4               2               4               14         16        
+
+Average Waiting Time: 9.00
+Average Turnaround Time: 13.00
+CPU Utilization: 100.00%
+Total Execution Time: 20 time units
+
+=== Priority Scheduling ===
+
+Gantt Chart:
+Execution Order:
++------+------+------+------+------+
+| P1  | P4  | P3  | P5  | P2  |
++------+------+------+------+------+
+0     5    14    16    17    20
+
+
+Priority Scheduling
+PID   Arrival_Time    Burst_Time      Priority        WT         TAT       
+1     0               5               2               0          5         
+4     1               9               5               4          13        
+3     4               2               4               10         12        
+5     2               1               3               14         15        
+2     2               3               1               15         18        
+
+Average Waiting Time: 8.60
+Average Turnaround Time: 12.60
+CPU Utilization: 100.00%
+Total Execution Time: 20 time units
+
+=== Shortest Job First ===
+
+Gantt Chart:
+Execution Order:
++------+------+------+------+------+
+| P1  | P5  | P3  | P2  | P4  |
++------+------+------+------+------+
+0     5     6     8    11    20
+
+
+Shortest Job First (SJF)
+PID   Arrival_Time    Burst_Time      Priority        WT         TAT       
+1     0               5               2               0          5         
+5     2               1               3               3          4         
+3     4               2               4               2          4         
+2     2               3               1               6          9         
+4     1               9               5               10         19        
+
+Average Waiting Time: 4.20
+Average Turnaround Time: 8.20
+CPU Utilization: 100.00%
+Total Execution Time: 20 time units
+
+
+============================================================
+MEMORY MANAGEMENT SIMULATION
+============================================================
+
+=== First Fit Memory Allocation ===
+
+Initial Memory Layout:
+Block ID | Start Address | End Address | Size (KB) | Status     | Process
+---------|---------------|-------------|-----------|------------|---------
+       1 |             0 |          99 |       100 | Free       | -
+       2 |           100 |         599 |       500 | Free       | -
+       3 |           600 |         799 |       200 | Free       | -
+       4 |           800 |        1099 |       300 | Free       | -
+       5 |          1100 |        1699 |       600 | Free       | -
+Allocated Process P1 (212 KB) to Block 2 (500 KB)
+Allocated Process P2 (417 KB) to Block 5 (600 KB)
+Allocated Process P3 (112 KB) to Block 3 (200 KB)
+Failed to allocate Process P4 (426 KB) - No suitable block found
+
+Final Memory Layout after First Fit:
+Block ID | Start Address | End Address | Size (KB) | Status     | Process
+---------|---------------|-------------|-----------|------------|---------
+       1 |             0 |          99 |       100 | Free       | -
+       2 |           100 |         599 |       500 | Allocated  | P1
+       3 |           600 |         799 |       200 | Allocated  | P3
+       4 |           800 |        1099 |       300 | Free       | -
+       5 |          1100 |        1699 |       600 | Allocated  | P2
+
+=== Best Fit Memory Allocation ===
+
+Initial Memory Layout:
+Block ID | Start Address | End Address | Size (KB) | Status     | Process
+---------|---------------|-------------|-----------|------------|---------
+       1 |             0 |          99 |       100 | Free       | -
+       2 |           100 |         599 |       500 | Free       | -
+       3 |           600 |         799 |       200 | Free       | -
+       4 |           800 |        1099 |       300 | Free       | -
+       5 |          1100 |        1699 |       600 | Free       | -
+Allocated Process P1 (212 KB) to Block 4 (300 KB)
+Allocated Process P2 (417 KB) to Block 2 (500 KB)
+Allocated Process P3 (112 KB) to Block 3 (200 KB)
+Allocated Process P4 (426 KB) to Block 5 (600 KB)
+
+Final Memory Layout after Best Fit:
+Block ID | Start Address | End Address | Size (KB) | Status     | Process
+---------|---------------|-------------|-----------|------------|---------
+       1 |             0 |          99 |       100 | Free       | -
+       2 |           100 |         599 |       500 | Allocated  | P2
+       3 |           600 |         799 |       200 | Allocated  | P3
+       4 |           800 |        1099 |       300 | Allocated  | P1
+       5 |          1100 |        1699 |       600 | Allocated  | P4
+
+=== Worst Fit Memory Allocation ===
+
+Initial Memory Layout:
+Block ID | Start Address | End Address | Size (KB) | Status     | Process
+---------|---------------|-------------|-----------|------------|---------
+       1 |             0 |          99 |       100 | Free       | -
+       2 |           100 |         599 |       500 | Free       | -
+       3 |           600 |         799 |       200 | Free       | -
+       4 |           800 |        1099 |       300 | Free       | -
+       5 |          1100 |        1699 |       600 | Free       | -
+Allocated Process P1 (212 KB) to Block 5 (600 KB)
+Allocated Process P2 (417 KB) to Block 2 (500 KB)
+Allocated Process P3 (112 KB) to Block 4 (300 KB)
+Failed to allocate Process P4 (426 KB) - No suitable block found
+
+Final Memory Layout after Worst Fit:
+Block ID | Start Address | End Address | Size (KB) | Status     | Process
+---------|---------------|-------------|-----------|------------|---------
+       1 |             0 |          99 |       100 | Free       | -
+       2 |           100 |         599 |       500 | Allocated  | P2
+       3 |           600 |         799 |       200 | Free       | -
+       4 |           800 |        1099 |       300 | Allocated  | P3
+       5 |          1100 |        1699 |       600 | Allocated  | P1
+
+
+============================================================
+PAGE REPLACEMENT SIMULATION
+============================================================
+
+=== FIFO Page Replacement ===
+Page Reference Sequence: [7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2]
+Number of Frames: 3
+
+Step-by-step execution:
+Step       Frames          Page Fault
+----------|---------------|----------
+1          [7]             Yes       
+2          [7, 0]          Yes       
+3          [7, 0, 1]       Yes       
+4          [0, 1, 2]       Yes       
+5          [0, 1, 2]       No        
+6          [1, 2, 3]       Yes       
+7          [2, 3, 0]       Yes       
+8          [3, 0, 4]       Yes       
+9          [0, 4, 2]       Yes       
+10         [4, 2, 3]       Yes       
+11         [2, 3, 0]       Yes       
+12         [2, 3, 0]       No        
+13         [2, 3, 0]       No        
+
+Total Page Faults: 10
+Page Fault Rate: 76.92%
+
+=== LRU Page Replacement ===
+Page Reference Sequence: [7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2]
+Number of Frames: 3
+
+Step-by-step execution:
+Step       Frames          Page Fault
+----------|---------------|----------
+1          [7]             Yes       
+2          [7, 0]          Yes       
+3          [7, 0, 1]       Yes       
+4          [0, 1, 2]       Yes       
+5          [1, 2, 0]       No        
+6          [2, 0, 3]       Yes       
+7          [2, 3, 0]       No        
+8          [3, 0, 4]       Yes       
+9          [0, 4, 2]       Yes       
+10         [4, 2, 3]       Yes       
+11         [2, 3, 0]       Yes       
+12         [2, 0, 3]       No        
+13         [0, 3, 2]       No        
+
+Total Page Faults: 9
+Page Fault Rate: 69.23%
+
+=== Optimal Page Replacement ===
+Page Reference Sequence: [7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2]
+Number of Frames: 3
+
+Step-by-step execution:
+Step       Frames          Page Fault
+----------|---------------|----------
+1          [7]             Yes       
+2          [7, 0]          Yes       
+3          [7, 0, 1]       Yes       
+4          [2, 0, 1]       Yes       
+5          [2, 0, 1]       No        
+6          [2, 0, 3]       Yes       
+7          [2, 0, 3]       No        
+8          [2, 4, 3]       Yes       
+9          [2, 4, 3]       No        
+10         [2, 4, 3]       No        
+11         [2, 0, 3]       Yes       
+12         [2, 0, 3]       No        
+13         [2, 0, 3]       No        
+
+Total Page Faults: 7
+Page Fault Rate: 53.85%xw

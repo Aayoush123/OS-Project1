@@ -5,23 +5,7 @@ public class CPU_Scheduler
 {
     public static void main(String[] args) 
     {
-        // Handle command-line argument for filename
-        String filename = "processes.txt"; // default filename
-        if (args.length > 0) {
-            filename = args[0];
-            System.out.println("Using input file: " + filename);
-        } else {
-            System.out.println("Using default: processes.txt");
-        }
-        
-        List<Process_Create> processes = readProcessesFromFile(filename);
-        
-        if (processes.isEmpty()) {
-            System.err.println("Error: No processes loaded from file. Exiting.");
-            return;
-        }
-        
-        System.out.println("Successfully loaded " + processes.size() + " processes from " + filename);
+        List<Process_Create> processes = readProcessesFromFile("processes.txt");
         
         Scheduling_Algorithms scheduler = new Scheduling_Algorithms();
 
@@ -138,7 +122,7 @@ public class CPU_Scheduler
         {
             System.err.println("Error reading file: " + e.getMessage());
         } catch (NumberFormatException e) {
-            System.err.println("Error parsing process data: " + e.getMessage());
+            System.err.println("Error parsing process data : " + e.getMessage());
         }
         return processes;
     }
